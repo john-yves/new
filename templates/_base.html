@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+{% load static %}
+{% load crispy_forms_tags %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="{% static 'css/fontastic.css' %}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'css/style.default.css' %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+  <title>Dashboard</title>
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.2/dist/Chart.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+      <script>
+      {% comment %} CHART:  HUMAN SECURITY ISSUES PER SECTOR{% endcomment %}
+      // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      {% for i in results %}
+      // Draw the pie chart for Sarah's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawSarahChart{{ i.id }});
+
+
+
+      // Callback that draws the pie chart for Sarah's pizza.
+      function drawSarahChart{{ i.id }}() {
+
+        // Create the data table for Sarah's pizza.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Ibyakozwe', {{ i.achieved }}],
+          ['Ibisigaye', {{ i.pending }}],
+
+        ]);
+
+        // Set options for Sarah's pie chart.
+        var options = {
+                       pieHole: 0.2,
+                       width:400,
+                       height:200,};
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.PieChart(document.getElementById('Sarah_chart_div{{ i.id }}'));
+        chart.draw(data, options);
+      }
+
+      {% endfor %}
+            {% comment %}END CHART PER SECTOR{% endcomment %}
+
+
+
+</script>
+  </head>
+  <body>
+    <div class="page">
+      <!-- Main Navbar-->
+      <header class="header">
+        <nav class="navbar">
+          <!-- Search Box-->
+          <div class="search-box">
+            <button class="dismiss"><i class="icon-close"></i></button>
+            <form id="searchForm" action="#" role="search">
+              <input type="search" placeholder="What are you looking for..." class="form-control">
+            </form>
+          </div>
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <!-- Navbar Header-->
+              <div class="navbar-header">
+                <!-- Navbar Brand --><a href="{% url 'dashboard' %}" class="navbar-brand d-none d-sm-inline-block">
+                  <div class="brand-text d-none d-lg-inline-block"><img src="{% static 'img/rwanda_logo.png' %}" alt="" width="60"> <span>Rwamagana Human Security Issues Reporting System </span><strong></strong></div>
+                  <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+              </div>
+              <!-- Navbar Menu -->
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                <!-- Search-->
+                <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                <!-- Notifications-->
+                <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell-o"></i><span class="badge bg-red badge-corner">12</span></a>
+                  <ul aria-labelledby="notifications" class="dropdown-menu">
+                    <li><a rel="nofollow" href="#" class="dropdown-item">
+                        <div class="notification">
+                          <div class="notification-content"><i class="fa fa-envelope bg-green"></i>You have 6 new messages </div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item">
+                        <div class="notification">
+                          <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You have 2 Pending status</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item">
+                        <div class="notification">
+                          <div class="notification-content"><i class="fa fa-upload bg-orange"></i>Status Updated</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item">
+                        <div class="notification">
+                          <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You have new KPIs</div>
+                          <div class="notification-time"><small>10 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>view all notifications                                            </strong></a></li>
+                  </ul>
+                </li>
+
+                <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+          <!-- Sidebar Header-->
+          <div class="sidebar-header d-flex align-items-center">
+            <div class="avatar"><img src="{% static 'img/avatar-anonymous.png' %}" alt="..." class="img-fluid rounded-circle"></div>
+            <div class="title">
+              <h1 class="h4">{{ user.username }}</h1>
+                {% if user.user_profile.role == 1 %}
+                  <p>{{ user.user_profile.sector }}</p>
+                {% endif %}
+            </div>
+          </div>
+          <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+          <ul class="list-unstyled">
+            <li class="active"><a href="{% url 'dashboard' %}"> <i class="icon-home"></i>Home </a></li>
+              <!-- TODO: add more features -->
+
+
+            {% if user.user_profile.role == 3 or user.user_profile.role == 2 %}
+                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Human Security Issues</a>
+                  <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                  {% comment %}Dropdown List KPIs for admin dashboard {% endcomment %}
+                      {% for kpi in kpis %}
+                        <li><a href="{% url 'kpi_charts' kpi.id%}">{{ kpi.name }}</a></li>
+                      {% endfor %}
+                  </ul>
+                </li>
+
+{#                <!-- dropdown list for agriculture and animal sector-->#}
+{#                <li><a href="#agriculture" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i><b style="font-weight: 700;">Agriculture & Animal Sector</b></a>#}
+{#                  <ul id="agriculture" class="collapse list-unstyled ">#}
+{#                      <li><a href="{% url 'crops'%}">Crops</a></li>#}
+{#                      <li><a href="{% url 'seeds' %}">Seeds</a></li>#}
+{#                      <li><a href="{% url 'ubwanikiro' %}">Ubwanikiro</a></li>#}
+{#                      <li><a href="{% url 'terassis' %}">Unused Terassis construction for soil erosion </a></li>#}
+{#                      <li><a href="{% url 'banana' %}">Banana Rehabilitation cultivated and fertilised</a></li>#}
+{#                      <li><a href="{% url 'improved_seeds' %}">AGRICULTURAL INPUTS MINERAL FERTILISER&IMPROVED SEEDS</a></li>#}
+{#                      <li><a href="{% url 'insemination' %}">Insemination</a></li>#}
+{#                      <li><a href="{% url 'inkazizakurikiranwa' %}">Inka Zizakurikiranwa</a></li>#}
+{#                      <li><a href="{% url 'girinka' %}">Girinka</a></li>#}
+{#                      <li><a href="{% url 'trainings' %}">Trainings</a></li>#}
+{#                      <li><a href="{% url 'fertilizer' %}">Fertilizer</a></li>#}
+{#                      <li><a href="{% url 'vaccinations' %}">Vaccination</a></li>#}
+{#                      <li><a href="{% url 'irrigation' %}">Irrigation</a></li>#}
+{#                      <li><a href="{% url 'pumps' %}">Number of Pumps</a></li>#}
+{#                      <li><a href="{% url 'imihigo' %}">Imihigo</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!-- Dropdown list for private Sector development -->#}
+{#                <li><a href="#private" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Private Sector Development</a>#}
+{#                  <ul id="private" class="collapse list-unstyled ">#}
+{#                      <li><a href="#">Data Entry</a></li>#}
+{#                      <li><a href="#">View Data</a></li>#}
+{#                      <li><a href="#">Consolidated Report</a></li>#}
+{#                      <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!-- Dropdown list for Enegry sector -->#}
+{#                <li><a href="#energy" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Energy Sector</a>#}
+{#                    <ul id="energy" class="collapse list-unstyled ">#}
+{#                      <li><a href="#">Data Entry</a></li>#}
+{#                      <li><a href="#">View Data</a></li>#}
+{#                      <li><a href="#">Consolidated Report</a></li>#}
+{#                      <li><a href="#">Charts</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{##}
+{#                <!-- DropDown list for Social Protection -->#}
+{#                <li><a href="#social" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Social Protection</a>#}
+{#                   <ul id="social" class="collapse list-unstyled ">#}
+{#                      <li><a href="#">Data Entry</a></li>#}
+{#                      <li><a href="#">View Data</a></li>#}
+{#                      <li><a href="#">Consolidated Report</a></li>#}
+{#                      <li><a href="#">Charts</a></li>#}
+{#                   </ul>#}
+{#                </li>#}
+{##}
+{#                <!-- Dropdown list for Environmental & Natural Resources -->#}
+{#                <li><a href="#environmnetal" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Environmental & Natural Resources</a>#}
+{#                  <ul id="environmnetal" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!-- Dropdown list for Health Sector-->#}
+{#                <li><a href="#health" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Health Sector</a>#}
+{#                  <ul id="health" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!-- Dropdown list for Education Sector-->#}
+{#                <li><a href="#education" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Education Sector</a>#}
+{#                  <ul id="education" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#               <!-- Dropdown list for Gender & Family Promotion -->#}
+{#               <li><a href="#familysector" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Gender & Family Promotion</a>#}
+{#                  <ul id="familysector" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#               </li>#}
+{##}
+{#               <!-- Dropdown list for Water & Sanitation -->#}
+{#               <li><a href="#sanitation" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Water & Sanitation</a>#}
+{#                  <ul id="sanitation" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#               </li>#}
+{##}
+{#               <!-- Dropdown list for Governance & Decentralization -->#}
+{#               <li><a href="#decentralization" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Governance & Decentralization</a>#}
+{#                  <ul id="decentralization" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#               </li>#}
+
+               {#snippets for adding data #}
+
+{#                <li><a href="#adddata" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Add User</a>#}
+{#                  <ul id="adddata" class="collapse list-unstyled ">#}
+{#                      <li><a href="{% url 'family' %}">Add Family</a></li>#}
+{#                      <li><a href="{% url 'add_kpi' %}">Add KPI</a></li>#}
+{##}
+{#                  </ul>#}
+{#                </li>#}
+
+              <!--------------------- when user_profile.role is from each sector ------------------>
+                {% else %}
+
+                <!--Dropdown list for Human Security Issues-->
+                <li><a href="#humansecurity1" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Human Security Issues</a>
+                  <ul id="humansecurity1" class="collapse list-unstyled ">
+                  {% comment %}Dropdown List KPIs for admin dashboard {% endcomment %}
+                      {% for kpi in kpis %}
+                        <li><a href="{% url 'sector_charts' kpi.id %}">{{ kpi.name }}</a></li>
+                      {% endfor %}
+                  </ul>
+                </li>
+
+                <!--Dropdown list for Agriculture & Animal Sector-->
+{#                <li><a href="#agricultureandanimal" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i><b style="font-weight: 700;">Agriculture & Animal Sector</b></a>#}
+{#                  <ul id="agricultureandanimal" class="collapse list-unstyled ">#}
+{#                      <li><a href="{% url 'crop_sector'%}">Crops</a></li>#}
+{#                      <li><a href="{% url 'seed_sector' %}">Seeds</a></li>#}
+{#                      <li><a href="{% url 'ubwanikiro_sector' %}">Ubwanikiro</a></li>#}
+{#                      <li><a href="{% url 'terrassis_sector' %}">Unused Terassis construction for soil erosion </a></li>#}
+{#                      <li><a href="{% url 'banana_sector' %}">Banana Rehabilitation cultivated and fertilised</a></li>#}
+{#                      <li><a href="{% url 'improved_seed_sector' %}">AGRICULTURAL INPUTS MINERAL FERTILISER&IMPROVED SEEDS</a></li>#}
+{#                      <li><a href="{% url 'insemination_sector' %}">Insemination</a></li>#}
+{#                      <li><a href="{% url 'inkazizakurikiranwa_sector' %}">Inka Zizakurikiranwa</a></li>#}
+{#                      <li><a href="{% url 'girinka_sector' %}">Girinka</a></li>#}
+{#                      <li><a href="{% url 'training_sector' %}">Trainings</a></li>#}
+{#                      <li><a href="{% url 'fertilizer_sector' %}">Fertilizer</a></li>#}
+{#                      <li><a href="{% url 'vaccination_sector' %}">Vaccination</a></li>#}
+{#                      <li><a href="{% url 'irrigated_sector' %}">Irrigation</a></li>#}
+{#                      <li><a href="{% url 'number_of_pump_sector' %}">Number of Pumps</a></li>#}
+{#                      <li><a href="{% url 'imihigo_sector' %}">Imihigo</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Private Sector Development-->#}
+{#                <li><a href="#privatesector" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Private Sector Development</a>#}
+{#                  <ul id="privatesector" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Energy Sector-->#}
+{#                <li><a href="#energysector" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Energy Sector</a>#}
+{#                  <ul id="energysector" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Social Protection-->#}
+{#                <li><a href="#socialprotection" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Social Protection</a>#}
+{#                  <ul id="socialprotection" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Environmental & Natural Resources-->#}
+{#                <li><a href="#environmental" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Environmental & Natural Resources</a>#}
+{#                  <ul id="environmental" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Health Sector-->#}
+{#                <li><a href="#healthsector" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Health Sector</a>#}
+{#                  <ul id="healthsector" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Education Sector-->#}
+{#                <li><a href="#educationsector" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Education Sector</a>#}
+{#                  <ul id="educationsector" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                 <!--Dropdown list for Gender & Family Promotion-->#}
+{#                <li><a href="#genderandfamily" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Gender & Family Promotion</a>#}
+{#                  <ul id="genderandfamily" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Water & Sanitation-->#}
+{#                <li><a href="#waterandsanitation" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Water & Sanitation</a>#}
+{#                  <ul id="waterandsanitation" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+{##}
+{#                <!--Dropdown list for Governance & Decentralization -->#}
+{#                <li><a href="#governancesector" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Governance & Decentralization</a>#}
+{#                  <ul id="governancesector" class="collapse list-unstyled ">#}
+{#                    <li><a href="#">Data Entry</a></li>#}
+{#                    <li><a href="#">View Data</a></li>#}
+{#                    <li><a href="#">Consolidated Report</a></li>#}
+{#                    <li><a href="#">Charts</a></li>#}
+{#                  </ul>#}
+{#                </li>#}
+
+
+                {#snippets for adding data #}
+
+                <li><a href="#adddata" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Setting</a>
+                  <ul id="adddata" class="collapse list-unstyled ">
+                      <li><a href="{% url 'family' %}">Add Family</a></li>
+{#                      <li><a href="{% url 'add_kpi' %}">Add KPI</a></li>#}
+                      <li><a href="">Create Report</a></li>
+                  </ul>
+                </li>
+                
+            {% endif %}
+          </ul>
+{#          <a href="{% url 'reporting' %}">#}
+{#            <button> Create report</button>#}
+{#          </a><br>#}
+
+        </nav>
+        <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header mb-3">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Dashboard</h2>
+            </div>
+          </header>
+
+            {% block content %}
+
+            {% endblock %}
+
+<!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Rwamagana District &copy; 2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>By <a href="#" class="external">Pelin</a></p>
+                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/popper.js/umd/popper.min.js' %}"> </script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery.cookie/jquery.cookie.js' %}"> </script>
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'js/charts-home.js' %}"></script>
+    {% comment %}Charts{% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.2/dist/Chart.min.js"></script>
+    <!-- Main File-->
+    <script src="{% static 'js/front.js' %}"></script>
+  </body>
+</html>
