@@ -1,5 +1,9 @@
 from django.contrib import messages
 from django.db import models
+from django.http import HttpResponse
+from .resources import UmuryangoResource
+from tablib import Dataset
+import csv
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, View, CreateView
 
@@ -154,3 +158,30 @@ class AddKpi(CreateView):
         kpiform.save()
         messages.success(self.request, 'KPI created successfully.')
         return redirect('dashboard')
+
+
+################################# exporting data ####################################################
+
+def export (request):
+    umuryango_resource = UmuryangoResource()
+    dataset = umuryango_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename = "umuryangos.csv"'
+
+    return response
+
+################################# importing data ####################################################
+def simple_upload(request):
+    if request.method == 'POST':
+        umuryango_resource = UmuryangoResource()
+        dataset = Dataset()
+        new_umuryangos = request.FILES['myfile']
+
+
+        imported_data = dataset.load(new_umuryangos.read())
+        result = umuryango_resource.import_data(dataset, dry_run=True)
+
+        if not result.has_errors():
+            umuryango_resource.import_data(dataset, dry_run=False)
+
+    return render(request, 'core/import.html')
